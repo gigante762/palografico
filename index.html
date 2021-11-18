@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: rgb(22, 22, 22);
+            color: #fff;
+        }
+
+        div p {
+            display: flex;
+        }
+        
+
+    </style>
+    <title>Palográfico</title>
+</head>
+<body>
+    <script src="p5.min.js"></script>
+    <script src="functions.js"></script>
+    <script src="skeletoText.js"></script>
+    <script src="sketch4.js"></script>
+
+
+    <div style='border: 1px solid black'>
+        <button onclick="resetImg(); image(img,0,0)">Resetar</button>
+        
+        <button onclick="simulateDilatarCruz(img); image(img,0,0)">Dilatar</button>
+        <button onclick="simulateDilatarVertical(img); image(img,0,0)">DilatarVertical</button>
+        <button onclick="simulateDilatarHorizontal(img); image(img,0,0)">DilatarHorizontal</button>
+
+        <button onclick="erodirCruz(img); image(img,0,0)">Erodir</button>
+        <button onclick="erodirVertical(img); image(img,0,0)">erodirVertical</button>
+        <button onclick="erodirHorizontal(img); image(img,0,0)">erodirHorizontal</button>
+
+    
+        <button onclick="inverter(img); image(img,0,0);">inverter</button>
+        <button onclick="mirrorH(img); image(img,0,0);">mirrorH</button>
+        <button onclick="mirrorV(img); image(img,0,0);">mirrorV</button>
+        <button onclick="verme(img); image(img,0,0);">verme</button>
+        <button onclick="skeletize(img); image(img,0,0);">Skeletize</button>
+        
+        <div style='border: 1px solid black;'>
+            <button onclick="thresholdbtn()">threshold</button>
+            <label for="">limiar: </label>
+            <input type="number"  value = '230' id="threshold_limiar" min="0" max="255">
+        </div>
+        
+        <script>
+
+            document.getElementById('threshold_limiar').addEventListener('change',()=>{
+                resetImg();
+                thresholdbtn()
+            })
+
+            function thresholdbtn()
+            {
+                let lim = document.getElementById('threshold_limiar').value
+                lim = Number(lim)
+                threshold(img,lim)
+                image(img,0,0)
+            }
+
+            function resetImg()
+            {
+                /* Realiza a copia dos pixels */
+                for (let y = 0; y < img.height; y++) {
+                    for (let x = 0; x < img.width; x++) {
+                        setColor(img,x,y, getColor(imgbkp,x,y))
+                    }
+                }
+
+                img.updatePixels()
+            }
+        </script>
+    </div>
+</body>
+</html>
