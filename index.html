@@ -12,15 +12,17 @@
         div p {
             display: flex;
         }
-        
-
     </style>
     <title>Palográfico</title>
 </head>
 <body>
     <script src="p5.min.js"></script>
-    <script src="functions.js"></script>
+    <script src="ostu.js"></script>
     <script src="skeletoText.js"></script>
+    <script src="functions.js"></script>
+    <script src="funcoesBase.js"></script>
+    <script src="funcoesMorfologicas.js"></script>
+    <script src="funcoesAnaliticas.js"></script>
     <script src="sketch4.js"></script>
 
 
@@ -30,24 +32,38 @@
         <button onclick="simulateDilatarCruz(img); image(img,0,0)">Dilatar</button>
         <button onclick="simulateDilatarVertical(img); image(img,0,0)">DilatarVertical</button>
         <button onclick="simulateDilatarHorizontal(img); image(img,0,0)">DilatarHorizontal</button>
-
+        <hr>
         <button onclick="erodirCruz(img); image(img,0,0)">Erodir</button>
         <button onclick="erodirVertical(img); image(img,0,0)">erodirVertical</button>
         <button onclick="erodirHorizontal(img); image(img,0,0)">erodirHorizontal</button>
-
+        <hr>
     
         <button onclick="inverter(img); image(img,0,0);">inverter</button>
         <button onclick="mirrorH(img); image(img,0,0);">mirrorH</button>
         <button onclick="mirrorV(img); image(img,0,0);">mirrorV</button>
         <button onclick="verme(img); image(img,0,0);">verme</button>
+        <button onclick="gray(img); image(img,0,0);">gray</button>
+        <button onclick="mediana3x3(img); image(img,0,0);">mediana3x3</button>
+        <hr>
+
         <button onclick="skeletize(img); image(img,0,0);">Skeletize</button>
-        
+        <hr>
+        <button onclick="palitosrows = contarTodosPalitosSeparandoPorLinhas(img); console.log('total palitos: ',palitosrows);">contarTodosPalitosSeparandoPorLinhas</button>
+        <button onclick="palitos = contarTodosPalitos(img); console.log('total palitos: ',palitos.length);">contarTodosPalitos</button>
+        <button onclick="palitos = filterHorizontalPalitos(palitos); console.log('total palitos: ',palitos.length)">filterHorizontalPalitos</button>
+        <button onclick="palitos = filterVerticalPalitos(palitos); console.log('total palitos: ',palitos.length)">filterVerticalPalitos</button>
+        <button onclick="recriarFolhaDePalitos(palitos); console.log(palitos.length)">recriarFolhaDePalitos</button>
+        <button onclick="recriarFolhaDePalitosComRowsEContagem(palitosrows); ">recriarFolhaDePalitosComRowsEContagem</button>
+        <button onclick="background(255);">limpartela</button>
+        <hr>
         <div style='border: 1px solid black;'>
+            <button onclick="thresholdOtsuDisplay()">Otsu</button>
             <button onclick="thresholdbtn()">threshold</button>
             <label for="">limiar: </label>
             <input type="number"  value = '230' id="threshold_limiar" min="0" max="255">
         </div>
         
+
         <script>
 
             document.getElementById('threshold_limiar').addEventListener('change',()=>{
@@ -61,6 +77,23 @@
                 lim = Number(lim)
                 threshold(img,lim)
                 image(img,0,0)
+            }
+
+            function thresholdOtsuDisplay()
+            { 
+                let arr = [];
+
+                mapPixels(img, (r,g,b,a)=>{
+                    arr.push((Math.floor((r+g+b)/3)));
+                    return [r,g,b,a];
+                })
+                let r = otsu(arr);
+                console.log('Otsu:', r);
+
+                threshold(img,r)
+                image(img,0,0)
+
+
             }
 
             function resetImg()
